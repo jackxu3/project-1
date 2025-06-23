@@ -1,5 +1,44 @@
 ---
 title: "Quarto 1"
+author: "Jack Xu"
 format: html
+execute: 
+  echo: false
 ---
 
+
+```{r}
+suppressPackageStartupMessages(library(tidyverse))
+suppressPackageStartupMessages(library(palmerpenguins))
+```
+
+```{r}
+# Load necessary libraries
+library(tidyverse)
+library(palmerpenguins)
+
+# Filter out rows with missing or non-finite values
+penguins_clean <- penguins %>%
+  filter(!is.na(flipper_length_mm), !is.na(body_mass_g))
+
+# Create a scatter plot with cleaned data
+penguins_clean %>%
+  ggplot(aes(x = flipper_length_mm, y = body_mass_g, color = species)) +
+  geom_point(size = 3, alpha = 0.7) +
+  geom_smooth(method = "lm", formula = y ~ x, se = FALSE, linetype = "dashed") +
+  scale_color_manual(values = c("Adelie" = "#1b9e77", "Chinstrap" = "#d95f02", "Gentoo" = "#7570b3")) +
+  labs(
+    title = "Penguin Flipper Length vs Body Mass",
+    subtitle = "Grouped by Species",
+    x = "Flipper Length (mm)",
+    y = "Body Mass (g)",
+    color = "Species"
+  ) +
+  theme_minimal(base_size = 15) +
+  theme(
+    plot.title = element_text(face = "bold", size = 18),
+    plot.subtitle = element_text(size = 14),
+    legend.position = "top",
+    legend.title = element_text(face = "bold")
+  )
+```
